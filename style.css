@@ -1,6 +1,49 @@
 #container {
-    height: 800px;
-    width: 1000px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #F3DE8A;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#gameover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+    font-size: 75px;
+    font-weight: bolder;
+    text-shadow: 6px 0 #fff, -6px 0 #fff, 0 6px #fff, 0 -6px #fff,
+             3px 3px #fff, -3px -3px #fff, 3px -3px #fff, -3px 3px #fff;
+    color: #086788;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+    gap: 75px;
+}
+
+#countdown, #score {
+    font-size: 75px;
+    font-weight: bolder;
+    text-shadow: 6px 0 #fff, -6px 0 #fff, 0 6px #fff, 0 -6px #fff,
+             3px 3px #fff, -3px -3px #fff, 3px -3px #fff, -3px 3px #fff;
+    color: #086788;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    z-index: 9998;
+    pointer-events: none;
 }
 
 #barm {  
@@ -22,7 +65,7 @@
     background-size: cover;
     background-color: #F3DE8A;
     height: 100vh;
-    gap: 80px;
+    gap: 70px;
 }
 
 .outer-rules {
@@ -70,15 +113,22 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
     border-color: #086788;
     border-radius: 12px;
+    font-weight: bolder;
 }
 
 .button:hover {
     background-color: #086788;
-    transition: 0.7s;
+    transition: 0.4s;
     color: white;
 }
 
 .logo {
     width: 390px;
     height: 390px;
+}
+
+#menu {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
 }

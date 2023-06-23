@@ -7,12 +7,11 @@ function init_countdown() {
     setInterval(function () {
         var countdown = document.getElementById("countdown");
         if (timeleft < 0) {
-            //TODO: display game over screen
-            alert("GAME OVER");
+            show_game_over();
         }
         else {
             if (countdown) {
-                countdown.innerHTML = (timeleft / 100).toString();
+                countdown.innerHTML = (Math.round(timeleft / 10) / 10).toString();
             }
             else {
                 timeleft = 0;
@@ -151,7 +150,20 @@ function animate_elem(elem) {
         }
     }, 1);
 }
+function show_game_over() {
+    var game_over = document.getElementById("gameover");
+    if (game_over) {
+        game_over.style.display = 'flex';
+    }
+}
+function hide_game_over() {
+    var game_over = document.getElementById("gameover");
+    if (game_over) {
+        game_over.style.display = 'none';
+    }
+}
 function start_game() {
+    hide_game_over();
     var barm = document.getElementById("barm");
     if (barm) {
         animate_barm(barm);
