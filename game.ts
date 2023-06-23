@@ -1,11 +1,12 @@
 let timeleft: number = 1000;
 let notfound: boolean = true;
+let score: number = 0;
 
-function start_countdown() {
+function init_countdown() {
     setInterval(function() {
         let countdown = document.getElementById("countdown");
         if (timeleft < 0) {
-            //display game over screen
+            //TODO: display game over screen
             alert("GAME OVER");
         } else {
             if (countdown) {
@@ -16,6 +17,20 @@ function start_countdown() {
         }
         timeleft -= 1;
     }, 10);
+}
+
+function init_score() {
+    let counter = document.getElementById("score");
+    if (counter) {
+        counter.innerHTML = "Score: " + score;
+    }
+}
+
+function found_barm() {
+    timeleft += 500;
+    score += 1;
+    init_score();
+    notfound = false;
 }
 
 function generate_new_pos(container: HTMLElement | null): any[] | null {
@@ -31,18 +46,26 @@ function generate_new_pos(container: HTMLElement | null): any[] | null {
 }
 
 function animate_elem(elem: HTMLElement) {
+    notfound = true;
     let container = document.getElementById("container");
     let arr: any[] | null = generate_new_pos(container);
     let elem_pos = elem.getBoundingClientRect();
     let top: number = elem_pos.top;
     let left: number = elem_pos.left;
     let animate = setInterval(function() {
-        if (arr) {
+        if (arr && notfound) {
             if (top == arr[0] && left == arr[1]) {
                 if (notfound) {
                     arr = generate_new_pos(container);
                 } else {
                     clearInterval(animate);
+                    let new_arr: any[] | null = generate_new_pos(container);
+                    if (new_arr) {
+                        elem.style.top = new_arr[0] + "px";
+                        elem.style.left = new_arr[1] + "px";
+                        notfound = true;
+                        animate_elem(elem);
+                    }
                 }
             } else if (top < arr[0] && left < arr[1]) {
                 top += 1;
@@ -61,7 +84,16 @@ function animate_elem(elem: HTMLElement) {
             }
             elem.style.top = top + 'px';
             elem.style.left = left + 'px';
-        }     
+        } else if (!notfound) {
+            clearInterval(animate);
+            let new_arr: any[] | null = generate_new_pos(container);
+            if (new_arr) {
+                elem.style.top = new_arr[0] + "px";
+                elem.style.left = new_arr[1] + "px";
+                notfound = true;
+                animate_elem(elem);
+            }   
+        }    
     }, 1);    
 }
 
@@ -69,8 +101,10 @@ function start_game() {
     let barm: HTMLElement | null = document.getElementById("barm");    
     if (barm) {
         animate_elem(barm);
+        barm.addEventListener("click", found_barm);
     }
-    start_countdown();
+    init_countdown();
+    init_score();
 }
 
 document.addEventListener("DOMContentLoaded", function() {

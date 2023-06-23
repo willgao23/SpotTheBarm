@@ -1,10 +1,11 @@
 var timeleft = 1000;
 var notfound = true;
-function start_countdown() {
+var score = 0;
+function init_countdown() {
     setInterval(function () {
         var countdown = document.getElementById("countdown");
         if (timeleft < 0) {
-            //display game over screen
+            //TODO: display game over screen
             alert("GAME OVER");
         }
         else {
@@ -17,6 +18,18 @@ function start_countdown() {
         }
         timeleft -= 1;
     }, 10);
+}
+function init_score() {
+    var counter = document.getElementById("score");
+    if (counter) {
+        counter.innerHTML = "Score: " + score;
+    }
+}
+function found_barm() {
+    timeleft += 500;
+    score += 1;
+    init_score();
+    notfound = false;
 }
 function generate_new_pos(container) {
     if (container) {
@@ -31,19 +44,27 @@ function generate_new_pos(container) {
     }
 }
 function animate_elem(elem) {
+    notfound = true;
     var container = document.getElementById("container");
     var arr = generate_new_pos(container);
     var elem_pos = elem.getBoundingClientRect();
     var top = elem_pos.top;
     var left = elem_pos.left;
     var animate = setInterval(function () {
-        if (arr) {
+        if (arr && notfound) {
             if (top == arr[0] && left == arr[1]) {
                 if (notfound) {
                     arr = generate_new_pos(container);
                 }
                 else {
                     clearInterval(animate);
+                    var new_arr = generate_new_pos(container);
+                    if (new_arr) {
+                        elem.style.top = new_arr[0] + "px";
+                        elem.style.left = new_arr[1] + "px";
+                        notfound = true;
+                        animate_elem(elem);
+                    }
                 }
             }
             else if (top < arr[0] && left < arr[1]) {
@@ -69,14 +90,26 @@ function animate_elem(elem) {
             elem.style.top = top + 'px';
             elem.style.left = left + 'px';
         }
+        else if (!notfound) {
+            clearInterval(animate);
+            var new_arr = generate_new_pos(container);
+            if (new_arr) {
+                elem.style.top = new_arr[0] + "px";
+                elem.style.left = new_arr[1] + "px";
+                notfound = true;
+                animate_elem(elem);
+            }
+        }
     }, 1);
 }
 function start_game() {
     var barm = document.getElementById("barm");
     if (barm) {
         animate_elem(barm);
+        barm.addEventListener("click", found_barm);
     }
-    start_countdown();
+    init_countdown();
+    init_score();
 }
 document.addEventListener("DOMContentLoaded", function () {
     start_game();
