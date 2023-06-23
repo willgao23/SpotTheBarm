@@ -3,6 +3,7 @@ let notfound: boolean = true;
 let score: number = 0;
 let total: number = 0;
 let existsnew: boolean = false;
+let limit: number = 200;
 
 function init_countdown() {
     setInterval(function() {
@@ -34,7 +35,7 @@ function found_barm() {
     notfound = false;
     let container = document.getElementById("container");
 
-    if (total <= 200) {
+    if (total <= limit) {
         for (let i: number = 0; i < 5; i++) {
             let randnum: number = Math.floor(Math.random() * 11 + 1);
             let img = document.createElement("img");
@@ -159,6 +160,16 @@ function hide_game_over() {
 
 function start_game() {
     hide_game_over();
+    let container = document.getElementById("container");
+    if (container) {
+        let h: number = container.clientHeight;
+        let w: number = container.clientWidth;
+        if (h * w <= 500000) {
+            limit = 50;
+        } else if (h * w <= 1250000) {
+            limit = 100;
+        }
+    }
     let barm: HTMLElement | null = document.getElementById("barm");    
     if (barm) {
         animate_barm(barm);

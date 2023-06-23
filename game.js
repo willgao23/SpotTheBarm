@@ -3,6 +3,7 @@ var notfound = true;
 var score = 0;
 var total = 0;
 var existsnew = false;
+var limit = 200;
 function init_countdown() {
     setInterval(function () {
         var countdown = document.getElementById("countdown");
@@ -32,7 +33,7 @@ function found_barm() {
     init_score();
     notfound = false;
     var container = document.getElementById("container");
-    if (total <= 200) {
+    if (total <= limit) {
         for (var i = 0; i < 5; i++) {
             var randnum = Math.floor(Math.random() * 11 + 1);
             var img = document.createElement("img");
@@ -164,6 +165,19 @@ function hide_game_over() {
 }
 function start_game() {
     hide_game_over();
+    var container = document.getElementById("container");
+    if (container) {
+        var h = container.clientHeight;
+        var w = container.clientWidth;
+        if (h * w <= 500000) {
+            limit = 50;
+            console.log(limit);
+        }
+        else if (h * w <= 1250000) {
+            limit = 100;
+            console.log(limit);
+        }
+    }
     var barm = document.getElementById("barm");
     if (barm) {
         animate_barm(barm);
