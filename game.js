@@ -1,6 +1,8 @@
 var timeleft = 1000;
 var notfound = true;
 var score = 0;
+var total = 0;
+var existsnew = false;
 function init_countdown() {
     setInterval(function () {
         var countdown = document.getElementById("countdown");
@@ -30,6 +32,26 @@ function found_barm() {
     score += 1;
     init_score();
     notfound = false;
+    var container = document.getElementById("container");
+    if (total <= 200) {
+        for (var i = 0; i < 5; i++) {
+            var randnum = Math.floor(Math.random() * 11 + 1);
+            var img = document.createElement("img");
+            img.src = "images/" + randnum + ".png";
+            img.setAttribute("alt", "distraction images");
+            img.setAttribute("class", "moving");
+            if (container) {
+                container.appendChild(img);
+            }
+            var new_arr = generate_new_pos(container);
+            if (new_arr) {
+                img.style.top = new_arr[0] + "px";
+                img.style.left = new_arr[1] + "px";
+                animate_elem(img);
+            }
+            total++;
+        }
+    }
 }
 function generate_new_pos(container) {
     if (container) {
@@ -43,8 +65,7 @@ function generate_new_pos(container) {
         return null;
     }
 }
-function animate_elem(elem) {
-    notfound = true;
+function animate_barm(elem) {
     var container = document.getElementById("container");
     var arr = generate_new_pos(container);
     var elem_pos = elem.getBoundingClientRect();
@@ -55,16 +76,6 @@ function animate_elem(elem) {
             if (top == arr[0] && left == arr[1]) {
                 if (notfound) {
                     arr = generate_new_pos(container);
-                }
-                else {
-                    clearInterval(animate);
-                    var new_arr = generate_new_pos(container);
-                    if (new_arr) {
-                        elem.style.top = new_arr[0] + "px";
-                        elem.style.left = new_arr[1] + "px";
-                        notfound = true;
-                        animate_elem(elem);
-                    }
                 }
             }
             else if (top < arr[0] && left < arr[1]) {
@@ -90,22 +101,60 @@ function animate_elem(elem) {
             elem.style.top = top + 'px';
             elem.style.left = left + 'px';
         }
-        else if (!notfound) {
+        else {
             clearInterval(animate);
             var new_arr = generate_new_pos(container);
             if (new_arr) {
                 elem.style.top = new_arr[0] + "px";
                 elem.style.left = new_arr[1] + "px";
                 notfound = true;
-                animate_elem(elem);
+                animate_barm(elem);
             }
+        }
+    }, 1);
+}
+function animate_elem(elem) {
+    var container = document.getElementById("container");
+    var arr = generate_new_pos(container);
+    var elem_pos = elem.getBoundingClientRect();
+    var top = elem_pos.top;
+    var left = elem_pos.left;
+    var animate = setInterval(function () {
+        if (arr) {
+            if (top == arr[0] && left == arr[1]) {
+                if (notfound) {
+                    arr = generate_new_pos(container);
+                }
+            }
+            else if (top < arr[0] && left < arr[1]) {
+                top += 1;
+                left += 1;
+            }
+            else if (top > arr[0] && left > arr[1]) {
+                top -= 1;
+                left -= 1;
+            }
+            else if (top < arr[0]) {
+                top += 1;
+            }
+            else if (top > arr[0]) {
+                top -= 1;
+            }
+            else if (left < arr[1]) {
+                left += 1;
+            }
+            else {
+                left -= 1;
+            }
+            elem.style.top = top + 'px';
+            elem.style.left = left + 'px';
         }
     }, 1);
 }
 function start_game() {
     var barm = document.getElementById("barm");
     if (barm) {
-        animate_elem(barm);
+        animate_barm(barm);
         barm.addEventListener("click", found_barm);
     }
     init_countdown();

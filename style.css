@@ -1,8 +1,25 @@
 #container {
-    height: 100vh;
-    width: 100vh;
+    height: 800px;
+    width: 1000px;
 }
 
-#barm {
+#barm {  
+    pointer-events: auto;
+}
+
+.moving {
+    height: 100px;
+    width: 100px;
     position: absolute;
+    pointer-events: none
+}
+
+.outer {
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    background-color: #EAC435;
 }
