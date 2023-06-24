@@ -35,6 +35,11 @@ function found_barm() {
     notfound = false;
     let container = document.getElementById("container");
 
+    let audio = document.getElementById("win") as HTMLAudioElement;
+    if (audio) {
+        audio.play();
+    }
+
     if (total <= limit) {
         for (let i: number = 0; i < 5; i++) {
             let randnum: number = Math.floor(Math.random() * 11 + 1);
@@ -177,6 +182,7 @@ function start_game() {
     }
     init_countdown();
     init_score();
+
 }
 
 document.addEventListener("DOMContentLoaded", function() {

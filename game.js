@@ -33,6 +33,10 @@ function found_barm() {
     init_score();
     notfound = false;
     var container = document.getElementById("container");
+    var audio = document.getElementById("win");
+    if (audio) {
+        audio.play();
+    }
     if (total <= limit) {
         for (var i = 0; i < 5; i++) {
             var randnum = Math.floor(Math.random() * 11 + 1);
@@ -171,11 +175,9 @@ function start_game() {
         var w = container.clientWidth;
         if (h * w <= 500000) {
             limit = 50;
-            console.log(limit);
         }
         else if (h * w <= 1250000) {
             limit = 100;
-            console.log(limit);
         }
     }
     var barm = document.getElementById("barm");
