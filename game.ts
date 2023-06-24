@@ -170,7 +170,7 @@ function start_game() {
         let h: number = container.clientHeight;
         let w: number = container.clientWidth;
         if (h * w <= 500000) {
-            limit = 30;
+            limit = 25;
         } else if (h * w <= 1250000) {
             limit = 75;
         }
