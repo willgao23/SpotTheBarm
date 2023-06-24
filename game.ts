@@ -3,7 +3,7 @@ let notfound: boolean = true;
 let score: number = 0;
 let total: number = 0;
 let existsnew: boolean = false;
-let limit: number = 200;
+let limit: number = 135;
 
 function init_countdown() {
     setInterval(function() {
@@ -29,7 +29,7 @@ function init_score() {
 }
 
 function found_barm() {
-    timeleft += 500;
+    timeleft += 200;
     score += 1;
     init_score();
     notfound = false;
@@ -170,9 +170,9 @@ function start_game() {
         let h: number = container.clientHeight;
         let w: number = container.clientWidth;
         if (h * w <= 500000) {
-            limit = 50;
+            limit = 30;
         } else if (h * w <= 1250000) {
-            limit = 100;
+            limit = 75;
         }
     }
     let barm: HTMLElement | null = document.getElementById("barm");    

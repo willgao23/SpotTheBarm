@@ -3,7 +3,7 @@ var notfound = true;
 var score = 0;
 var total = 0;
 var existsnew = false;
-var limit = 200;
+var limit = 135;
 function init_countdown() {
     setInterval(function () {
         var countdown = document.getElementById("countdown");
@@ -28,7 +28,7 @@ function init_score() {
     }
 }
 function found_barm() {
-    timeleft += 500;
+    timeleft += 200;
     score += 1;
     init_score();
     notfound = false;
@@ -174,10 +174,10 @@ function start_game() {
         var h = container.clientHeight;
         var w = container.clientWidth;
         if (h * w <= 500000) {
-            limit = 50;
+            limit = 30;
         }
         else if (h * w <= 1250000) {
-            limit = 100;
+            limit = 75;
         }
     }
     var barm = document.getElementById("barm");
