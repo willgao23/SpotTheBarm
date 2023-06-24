@@ -4,6 +4,7 @@ var score = 0;
 var total = 0;
 var existsnew = false;
 var limit = 135;
+var increment = 5;
 function init_countdown() {
     setInterval(function () {
         var countdown = document.getElementById("countdown");
@@ -38,7 +39,7 @@ function found_barm() {
         audio.play();
     }
     if (total <= limit) {
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < increment; i++) {
             var randnum = Math.floor(Math.random() * 11 + 1);
             var img = document.createElement("img");
             img.src = "images/" + randnum + ".png";
@@ -47,7 +48,9 @@ function found_barm() {
             if (container) {
                 container.appendChild(img);
             }
-            var new_arr = generate_new_pos(container);
+            var width = img.getBoundingClientRect().width;
+            var height = img.getBoundingClientRect().height;
+            var new_arr = generate_new_pos(container, width, height);
             if (new_arr) {
                 img.style.top = new_arr[0] + "px";
                 img.style.left = new_arr[1] + "px";
@@ -57,10 +60,10 @@ function found_barm() {
         }
     }
 }
-function generate_new_pos(container) {
+function generate_new_pos(container, width, height) {
     if (container) {
-        var h = container.clientHeight;
-        var w = container.clientWidth;
+        var h = container.clientHeight - height;
+        var w = container.clientWidth - width;
         var new_h = Math.floor(Math.random() * h);
         var new_w = Math.floor(Math.random() * w);
         return [new_h, new_w];
@@ -70,16 +73,18 @@ function generate_new_pos(container) {
     }
 }
 function animate_barm(elem) {
-    var container = document.getElementById("container");
-    var arr = generate_new_pos(container);
     var elem_pos = elem.getBoundingClientRect();
     var top = elem_pos.top;
     var left = elem_pos.left;
+    var width = elem_pos.width;
+    var height = elem_pos.height;
+    var container = document.getElementById("container");
+    var arr = generate_new_pos(container, width, height);
     var animate = setInterval(function () {
         if (arr && notfound) {
             if (top == arr[0] && left == arr[1]) {
                 if (notfound) {
-                    arr = generate_new_pos(container);
+                    arr = generate_new_pos(container, width, height);
                 }
             }
             else if (top < arr[0] && left < arr[1]) {
@@ -107,7 +112,7 @@ function animate_barm(elem) {
         }
         else {
             clearInterval(animate);
-            var new_arr = generate_new_pos(container);
+            var new_arr = generate_new_pos(container, width, height);
             if (new_arr) {
                 elem.style.top = new_arr[0] + "px";
                 elem.style.left = new_arr[1] + "px";
@@ -118,16 +123,18 @@ function animate_barm(elem) {
     }, 1);
 }
 function animate_elem(elem) {
-    var container = document.getElementById("container");
-    var arr = generate_new_pos(container);
     var elem_pos = elem.getBoundingClientRect();
     var top = elem_pos.top;
     var left = elem_pos.left;
+    var width = elem_pos.width;
+    var height = elem_pos.height;
+    var container = document.getElementById("container");
+    var arr = generate_new_pos(container, width, height);
     var animate = setInterval(function () {
         if (arr) {
             if (top == arr[0] && left == arr[1]) {
                 if (notfound) {
-                    arr = generate_new_pos(container);
+                    arr = generate_new_pos(container, width, height);
                 }
             }
             else if (top < arr[0] && left < arr[1]) {
@@ -174,7 +181,8 @@ function start_game() {
         var h = container.clientHeight;
         var w = container.clientWidth;
         if (h * w <= 500000) {
-            limit = 25;
+            limit = 20;
+            increment = 2;
         }
         else if (h * w <= 1250000) {
             limit = 75;

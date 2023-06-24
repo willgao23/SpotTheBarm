@@ -4,6 +4,7 @@ let score: number = 0;
 let total: number = 0;
 let existsnew: boolean = false;
 let limit: number = 135;
+let increment: number = 5;
 
 function init_countdown() {
     setInterval(function() {
@@ -41,7 +42,7 @@ function found_barm() {
     }
 
     if (total <= limit) {
-        for (let i: number = 0; i < 5; i++) {
+        for (let i: number = 0; i < increment; i++) {
             let randnum: number = Math.floor(Math.random() * 11 + 1);
             let img = document.createElement("img");
             img.src = "images/" + randnum + ".png";
@@ -50,7 +51,9 @@ function found_barm() {
             if (container) {
                 container.appendChild(img);
             }
-            let new_arr: any[] | null = generate_new_pos(container);
+            let width: number = img.getBoundingClientRect().width;
+            let height: number = img.getBoundingClientRect().height;
+            let new_arr: any[] | null = generate_new_pos(container, width, height);
             if (new_arr) {
                 img.style.top = new_arr[0] + "px";
                 img.style.left = new_arr[1] + "px";
@@ -62,10 +65,10 @@ function found_barm() {
 
 }
 
-function generate_new_pos(container: HTMLElement | null): any[] | null {
+function generate_new_pos(container: HTMLElement | null, width: number, height: number): any[] | null {
     if (container) {
-        let h: number = container.clientHeight;
-        let w: number = container.clientWidth;
+        let h: number = container.clientHeight - height;
+        let w: number = container.clientWidth - width;
         let new_h = Math.floor(Math.random() * h);
         let new_w = Math.floor(Math.random() * w);
         return [new_h, new_w];
@@ -75,16 +78,18 @@ function generate_new_pos(container: HTMLElement | null): any[] | null {
 }
 
 function animate_barm(elem: HTMLElement) {
-    let container = document.getElementById("container");
-    let arr: any[] | null = generate_new_pos(container);
     let elem_pos = elem.getBoundingClientRect();
     let top: number = elem_pos.top;
     let left: number = elem_pos.left;
+    let width: number = elem_pos.width;
+    let height: number = elem_pos.height;
+    let container = document.getElementById("container");
+    let arr: any[] | null = generate_new_pos(container, width, height);
     let animate = setInterval(function() {
         if (arr && notfound) {
             if (top == arr[0] && left == arr[1]) {
                 if (notfound) {
-                    arr = generate_new_pos(container);
+                    arr = generate_new_pos(container, width, height);
                 }
             } else if (top < arr[0] && left < arr[1]) {
                 top += 1;
@@ -105,7 +110,7 @@ function animate_barm(elem: HTMLElement) {
             elem.style.left = left + 'px';
         } else {
             clearInterval(animate);  
-            let new_arr: any[] | null = generate_new_pos(container);
+            let new_arr: any[] | null = generate_new_pos(container, width, height);
             if (new_arr) {
                 elem.style.top = new_arr[0] + "px";
                 elem.style.left = new_arr[1] + "px";
@@ -117,16 +122,18 @@ function animate_barm(elem: HTMLElement) {
 }
 
 function animate_elem(elem: HTMLElement) {
-    let container = document.getElementById("container");
-    let arr: any[] | null = generate_new_pos(container);
     let elem_pos = elem.getBoundingClientRect();
     let top: number = elem_pos.top;
     let left: number = elem_pos.left;
+    let width: number = elem_pos.width;
+    let height: number = elem_pos.height;
+    let container = document.getElementById("container");
+    let arr: any[] | null = generate_new_pos(container, width, height);
     let animate = setInterval(function() {
         if (arr) {
             if (top == arr[0] && left == arr[1]) {
                 if (notfound) {
-                    arr = generate_new_pos(container);
+                    arr = generate_new_pos(container, width, height);
                 }
             } else if (top < arr[0] && left < arr[1]) {
                 top += 1;
@@ -170,7 +177,8 @@ function start_game() {
         let h: number = container.clientHeight;
         let w: number = container.clientWidth;
         if (h * w <= 500000) {
-            limit = 25;
+            limit = 20;
+            increment = 2;
         } else if (h * w <= 1250000) {
             limit = 75;
         }
